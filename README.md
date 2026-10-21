@@ -1,5 +1,9 @@
 # dsh-proxy-config
 
+[![npm](https://img.shields.io/npm/v/dsh-proxy-config.svg?style=flat-square)](https://www.npmjs.com/package/dsh-proxy-config)
+[![topic](https://img.shields.io/badge/topic-dsh--plugin-0e7490.svg?style=flat-square)](https://github.com/topics/dsh-plugin)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
+
 One configurable **outbound HTTP proxy** for DeepSeek Harness, with a live reachability
 check and an **automatic no-proxy fallback** while the proxy does not answer — and a
 switch back to the proxy once it does.

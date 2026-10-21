@@ -1,5 +1,9 @@
 # dsh-proxy-config
 
+[![npm](https://img.shields.io/npm/v/dsh-proxy-config.svg?style=flat-square)](https://www.npmjs.com/package/dsh-proxy-config)
+[![topic](https://img.shields.io/badge/topic-dsh--plugin-0e7490.svg?style=flat-square)](https://github.com/topics/dsh-plugin)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
+
 一个可配置的 **出站 HTTP 代理** 插件：让 Harness 的请求走你指定的代理，并在代理不通时**自动回退为直连（no-proxy）**，代理恢复后再自动切回。
 
 配置完成后，效果等同于在 `~/.dsh/.env` 中写入：
