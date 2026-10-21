@@ -1,6 +1,6 @@
 {
   "name": "dsh-proxy-config",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "One configurable outbound HTTP proxy for DeepSeek Harness, with a live reachability check and an automatic no-proxy fallback while the proxy does not answer.",
   "type": "module",
   "main": "lib/index.js",
@@ -39,12 +39,21 @@
     "no-proxy"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dthcle/dsh-proxy-config.git"
+  },
+  "homepage": "https://github.com/dthcle/dsh-proxy-config#readme",
+  "bugs": {
+    "url": "https://github.com/dthcle/dsh-proxy-config/issues"
+  },
   "files": [
     "lib/**/*.js",
     "cordis.patch.yml",
     "locale/*.json",
     "icon.svg",
     "README.md",
-    "README.zh.md"
+    "README.zh.md",
+    "LICENSE"
   ]
 }
