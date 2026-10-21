@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "HTTP 代理（可自动回退）",
+    "description": "让 Harness 的出站请求走指定的 HTTP 代理；代理不通时自动回退为直连（no-proxy），并周期性重试。"
+  }
+}

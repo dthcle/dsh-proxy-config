@@ -1,0 +1,16 @@
+# dsh-proxy-config bundle patch: inserts the plugin's one Host row into the profile roster.
+#
+# The row applies the proxy endpoint from its own config, probes it at mount and on every
+# checkIntervalMs, and switches the process between the proxied and the direct (no-proxy)
+# mode. Every field has a default, so the bare row already works for a local proxy on
+# 127.0.0.1:11811; override what you need in the profile's own cordis.patch.yml:
+#
+#   - id: proxy-config
+#     name: dsh-proxy-config
+#     config:
+#       host: 127.0.0.1
+#       port: 11811
+#       noProxy: localhost,127.0.0.1,::1
+- insert:
+    - id: proxy-config
+      name: 'dsh-proxy-config'

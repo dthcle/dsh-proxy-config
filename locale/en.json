@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "HTTP Proxy (with fallback)",
+    "description": "Applies one outbound HTTP proxy to the harness, and falls back to a direct connection while that proxy does not answer."
+  }
+}
