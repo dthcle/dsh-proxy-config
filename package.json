@@ -1,6 +1,6 @@
 {
   "name": "dsh-proxy-config",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "One configurable outbound HTTP proxy for DeepSeek Harness, with a live reachability check and an automatic no-proxy fallback while the proxy does not answer.",
   "type": "module",
   "main": "lib/index.js",
