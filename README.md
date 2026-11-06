@@ -64,18 +64,17 @@ Nothing is proxied until the endpoint answers — until then the plugin simply r
 
 Every field has a default, so the bare row already targets `http://127.0.0.1:11811`.
 
-### In the desktop client (recommended)
+### In the desktop client
 
-**Settings → “HTTP proxy”** — a settings page of its own, listed beside General, Models, and
-Built-in plugins. The top line shows the live state (using the proxy / fallen back to direct /
-disabled, whether the endpoint answers, the last error, the managed `.env` state) with a
-**Check now** button, followed by four groups of inputs: the endpoint (scheme, host, port,
-user name, password), routing (enable, bypass list, `ALL_PROXY`, fallback), probe and
+**Plugins → dsh-proxy-config → the row `proxy-config` → Configure.** That page is the
+plugin's only configuration surface: the endpoint changes rarely, so it deliberately takes no
+top-level Settings entry. The top line shows the live state (using the proxy / fallen back to
+direct / disabled, whether the endpoint answers, the last error, the managed `.env` state)
+with a **Check now** button, followed by four groups of inputs: the endpoint (scheme, host,
+port, user name, password), routing (enable, bypass list, `ALL_PROXY`, fallback), probe and
 fallback, and the Harness-home `.env`. **Save** writes the profile's patch layer and applies
 it immediately — these fields are volatile, so neither a plugin reload nor a client restart is
 needed. The password is redacted by the Host, so leaving it empty keeps the stored value.
-
-The same form is on **sidebar Plugins → dsh-proxy-config → the row `proxy-config` → Configure**.
 
 ### In the configuration file
 

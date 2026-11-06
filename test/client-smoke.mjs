@@ -34,7 +34,7 @@ const localeCalls = []
 let boundNamespace
 const slots = {
   inject: (slot, callback) => {
-    assert.ok(slot === 'plugins.row.config' || slot === 'settings.section', `unexpected slot: ${slot}`)
+    assert.equal(slot, 'plugins.row.config', `the plugin must not claim any other slot, got: ${slot}`)
     callback()
     return () => {}
   },
@@ -72,20 +72,17 @@ const ctx = {
 
 exports_.apply(ctx)
 
-assert.equal(registrations.length, 2, 'both surfaces register')
-const rowEntry = registrations.find((item) => item.options.name === 'plugins.row.config')
-const tabEntry = registrations.find((item) => item.options.name === 'settings.section')
-assert.ok(rowEntry !== undefined, 'the Plugins-page row entry registers')
-assert.ok(tabEntry !== undefined, 'the settings page registers')
+assert.equal(registrations.length, 1, 'exactly one surface registers')
+const rowEntry = registrations[0]
+assert.equal(rowEntry.options.name, 'plugins.row.config')
 assert.equal(rowEntry.options.key, 'dsh-proxy-config#proxy-config')
-assert.equal(tabEntry.options.id, 'proxy-config')
-// The nav label must be translated text, never the raw key.
-assert.equal(tabEntry.options.label(), 'HTTP 代理')
 assert.equal(typeof rowEntry.options.inject, 'function')
 assert.deepEqual(localeCalls.map((call) => call.id).sort(), ['en', 'zh'])
 assert.ok(localeCalls.every((call) => call.keys > 20), 'both dictionaries carry the page text')
 
 const t = rowEntry.options.inject().t
+const injected = rowEntry.options.inject()
+assert.ok(injected.fallbackForm !== undefined, 'the service form is picked up as the fallback handle')
 assert.equal(t('title'), 'HTTP 代理')
 assert.equal(t('invalidNumber', { field: '端口', min: 1, max: 2 }), '端口 需要是 1–2 之间的整数')
 activeLocale = 'en'
@@ -120,23 +117,25 @@ const rendered = JSON.stringify(render(page), (key, item) => (typeof item === 's
 assert.ok(rendered.includes('dsh-proxy-config-page'), 'page carries its own styling scope')
 assert.ok(rendered.includes('127.0.0.1'), 'page carries the current host value')
 
-// The Settings tab reads the host form service directly, so a redacted password must not
-// turn into an accidental write: the draft falls back to the schema default.
-const secretless = render(tabEntry.component({
-  form: configForm,
-  t: (key, params) => (params === undefined ? key : `${key}:${JSON.stringify(params)}`),
-}))
-const tabTree = JSON.stringify(secretless, (key, item) => (typeof item === 'symbol' ? String(item) : item))
-assert.ok(tabTree.includes('dsh-proxy-config-page') || tabTree.includes('formUnavailable'), 'settings tab renders')
+// The owner's page form exposes `state`; the client service form exposes `getSnapshot()`.
+// The page must render from either, so the fallback handle is exercised too.
+const viaService = rowEntry.component({
+  view: 'page',
+  fallbackForm: configForm,
+  t,
+})
+const serviceTree = JSON.stringify(render(viaService), (key, item) => (typeof item === 'symbol' ? String(item) : item))
+assert.ok(serviceTree.includes('dsh-proxy-config-page'), 'the client-form fallback renders the same page')
 
 const rowWithSecretlessForm = render(rowEntry.component({
   view: 'page',
   form: { state: { value: { ...value, password: undefined }, revision: 4, writable: true }, mutate: async () => true },
   t,
 }))
-assert.ok(JSON.stringify(rowWithSecretlessForm).includes('dsh-proxy-config-save') === false || true)
+assert.ok(rowWithSecretlessForm !== undefined, 'a redacted password still renders')
 
 const unavailable = rowEntry.component({ view: 'page', t })
-assert.ok(unavailable !== undefined, 'a page without a Host form still renders')
+const unavailableTree = JSON.stringify(render(unavailable), (key, item) => (typeof item === 'symbol' ? String(item) : item))
+assert.ok(unavailableTree.includes('dsh-proxy-config-hint'), 'a page without any form explains itself')
 
-console.log('client smoke test passed: both registrations, locale, summary and page render')
+console.log('client smoke test passed: one registration, locale, summary and page render')
